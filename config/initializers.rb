@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Welcome to Bridgetown!
 #
 # This configuration file is for settings which affect your whole site.
@@ -20,6 +22,9 @@ Bridgetown.configure do |config|
 
   # Available options are `erb` (default), `serbea`, or `liquid`
   template_engine "erb"
+
+  # Enable internationalization
+  init :i18n, available_locales: [:en]
 
   # Other options you might want to investigate:
 

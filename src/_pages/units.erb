@@ -1,0 +1,289 @@
+---
+layout: table 
+title: "Unit List"
+---
+<%
+  units = site.data.units.map { |id, data| Unit.new(id:, data:) }
+  faction_options = units.map(&:faction).uniq.sort
+  type_options = units.map(&:unit_type).uniq.sort
+  tech_options = units.map(&:tech_level).uniq.sort
+%>
+<div class="flex flex-col">
+  <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-visible dark:bg-neutral-800 dark:border-neutral-700">
+    <div data-hs-datatable='{ "paging": false, "searching": true, "dom": "t", "language": { "zeroRecords": "No units found" } }' data-units-table>
+      <!-- Search -->
+      <div class="py-3 px-4">
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="relative max-w-xs w-full">
+            <label for="hs-table-input-search" class="sr-only">Search</label>
+            <input type="text" name="hs-table-search" id="hs-table-input-search" class="py-1.5 sm:py-2 px-3 ps-9 block w-full border-gray-200 shadow-2xs rounded-lg sm:text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="Search units..." data-hs-datatable-search="">
+            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
+              <svg class="size-4 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="relative" data-hs-combo-box='{ "isOpenOnFocus": true, "keepOriginalOrder": true }' data-units-filter="1" data-units-filter-placeholder="Faction" data-units-filter-any="Any">
+              <div class="relative w-40">
+                <label for="units-filter-faction" class="sr-only">Faction</label>
+                <input id="units-filter-faction" type="text" class="py-1.5 sm:py-2 px-3 pe-8 block w-full border-gray-200 shadow-2xs rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200" placeholder="Faction" data-hs-combo-box-input>
+                <button type="button" class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-400" data-hs-combo-box-toggle>
+                  <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="absolute z-50 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg dark:bg-neutral-800 dark:border-neutral-700" data-hs-combo-box-output style="display: none;">
+                <div class="max-h-64 overflow-y-auto p-1" data-hs-combo-box-output-items-wrapper>
+                  <div class="cursor-pointer py-2 px-3 text-sm text-gray-800 hover:bg-gray-100 rounded-lg dark:text-neutral-200 dark:hover:bg-neutral-700" data-hs-combo-box-output-item>
+                    <span data-hs-combo-box-search-text="Any" data-hs-combo-box-value>Any</span>
+                  </div>
+                  <% faction_options.each do |faction| %>
+                    <div class="cursor-pointer py-2 px-3 text-sm text-gray-800 hover:bg-gray-100 rounded-lg dark:text-neutral-200 dark:hover:bg-neutral-700" data-hs-combo-box-output-item>
+                      <span data-hs-combo-box-search-text="<%= faction %>" data-hs-combo-box-value><%= faction %></span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="relative" data-hs-combo-box='{ "isOpenOnFocus": true, "keepOriginalOrder": true }' data-units-filter="2" data-units-filter-placeholder="Type" data-units-filter-any="Any">
+              <div class="relative w-40">
+                <label for="units-filter-type" class="sr-only">Type</label>
+                <input id="units-filter-type" type="text" class="py-1.5 sm:py-2 px-3 pe-8 block w-full border-gray-200 shadow-2xs rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200" placeholder="Type" data-hs-combo-box-input>
+                <button type="button" class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-400" data-hs-combo-box-toggle>
+                  <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="absolute z-50 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg dark:bg-neutral-800 dark:border-neutral-700" data-hs-combo-box-output style="display: none;">
+                <div class="max-h-64 overflow-y-auto p-1" data-hs-combo-box-output-items-wrapper>
+                  <div class="cursor-pointer py-2 px-3 text-sm text-gray-800 hover:bg-gray-100 rounded-lg dark:text-neutral-200 dark:hover:bg-neutral-700" data-hs-combo-box-output-item>
+                    <span data-hs-combo-box-search-text="Any" data-hs-combo-box-value>Any</span>
+                  </div>
+                  <% type_options.each do |unit_type| %>
+                    <div class="cursor-pointer py-2 px-3 text-sm text-gray-800 hover:bg-gray-100 rounded-lg dark:text-neutral-200 dark:hover:bg-neutral-700" data-hs-combo-box-output-item>
+                      <span data-hs-combo-box-search-text="<%= unit_type %>" data-hs-combo-box-value><%= unit_type %></span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="relative" data-hs-combo-box='{ "isOpenOnFocus": true, "keepOriginalOrder": true }' data-units-filter="3" data-units-filter-placeholder="Tech" data-units-filter-any="Any">
+              <div class="relative w-36">
+                <label for="units-filter-tech" class="sr-only">Tech</label>
+                <input id="units-filter-tech" type="text" class="py-1.5 sm:py-2 px-3 pe-8 block w-full border-gray-200 shadow-2xs rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200" placeholder="Tech" data-hs-combo-box-input>
+                <button type="button" class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-400" data-hs-combo-box-toggle>
+                  <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="absolute z-50 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg dark:bg-neutral-800 dark:border-neutral-700" data-hs-combo-box-output style="display: none;">
+                <div class="max-h-64 overflow-y-auto p-1" data-hs-combo-box-output-items-wrapper>
+                  <div class="cursor-pointer py-2 px-3 text-sm text-gray-800 hover:bg-gray-100 rounded-lg dark:text-neutral-200 dark:hover:bg-neutral-700" data-hs-combo-box-output-item>
+                    <span data-hs-combo-box-search-text="Any" data-hs-combo-box-value>Any</span>
+                  </div>
+                  <% tech_options.each do |tech| %>
+                    <div class="cursor-pointer py-2 px-3 text-sm text-gray-800 hover:bg-gray-100 rounded-lg dark:text-neutral-200 dark:hover:bg-neutral-700" data-hs-combo-box-output-item>
+                      <span data-hs-combo-box-search-text="<%= tech %>" data-hs-combo-box-value><%= tech %></span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="relative" data-hs-combo-box='{ "isOpenOnFocus": true, "keepOriginalOrder": true }' data-units-filter="10" data-units-filter-type="constructor" data-units-filter-placeholder="Constructor" data-units-filter-any="Any">
+              <div class="relative w-40">
+                <label for="units-filter-constructor" class="sr-only">Constructor</label>
+                <input id="units-filter-constructor" type="text" class="py-1.5 sm:py-2 px-3 pe-8 block w-full border-gray-200 shadow-2xs rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200" placeholder="Constructor" data-hs-combo-box-input>
+                <button type="button" class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-400" data-hs-combo-box-toggle>
+                  <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="absolute z-50 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg dark:bg-neutral-800 dark:border-neutral-700" data-hs-combo-box-output style="display: none;">
+                <div class="max-h-64 overflow-y-auto p-1" data-hs-combo-box-output-items-wrapper>
+                  <div class="cursor-pointer py-2 px-3 text-sm text-gray-800 hover:bg-gray-100 rounded-lg dark:text-neutral-200 dark:hover:bg-neutral-700" data-hs-combo-box-output-item>
+                    <span data-hs-combo-box-search-text="Any" data-hs-combo-box-value>Any</span>
+                  </div>
+                  <div class="cursor-pointer py-2 px-3 text-sm text-gray-800 hover:bg-gray-100 rounded-lg dark:text-neutral-200 dark:hover:bg-neutral-700" data-hs-combo-box-output-item>
+                    <span data-hs-combo-box-search-text="Yes" data-hs-combo-box-value>Yes</span>
+                  </div>
+                  <div class="cursor-pointer py-2 px-3 text-sm text-gray-800 hover:bg-gray-100 rounded-lg dark:text-neutral-200 dark:hover:bg-neutral-700" data-hs-combo-box-output-item>
+                    <span data-hs-combo-box-search-text="No" data-hs-combo-box-value>No</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Search -->
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <div class="min-w-full inline-block align-middle">
+          <div class="overflow-hidden">
+            <table class="w-full">
+              <thead class="border-y border-gray-200 dark:border-neutral-700">
+                <tr>
+                  <th scope="col" class="py-1 group text-start font-normal focus:outline-hidden w-[30%] min-w-[20ex]">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Unit
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                  <th scope="col" class="py-1 group text-start font-normal focus:outline-hidden ">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Faction
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                  <th scope="col" class="py-1 group text-start font-normal focus:outline-hidden ">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Type
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                  <th scope="col" class="py-1 group text-center font-normal focus:outline-hidden ">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Tech
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Metal
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Energy
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Health
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Sight
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Range
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Speed
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                  <th scope="col" class="py-1 group text-start font-normal focus:outline-hidden " data-dt-order="html">
+                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
+                      Constructor
+                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
+                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
+                      </svg>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+                <% units.each do |unit| %>
+                  <tr id="<%= unit.id %>">
+                    <td class="p-3 max-w-0 overflow-hidden">
+                      <div class="flex items-center gap-x-3 min-w-0">
+                        <% if unit.icon_path %>
+                          <img class="shrink-0" style="width: 24px; height: 24px;" src="<%= relative_url unit.icon_path %>" alt="" width="24" height="24" loading="lazy">
+                        <% else %>
+                          <span class="inline-block shrink-0" style="width: 24px; height: 24px;"></span>
+                        <% end %>
+                        <% if unit.buildpic_path %>
+                          <img class="shrink-0 rounded-md" style="width: 40px; height: 40px;" src="<%= relative_url unit.buildpic_path %>" alt="<%= unit.id %>" width="40" height="40" loading="lazy">
+                        <% else %>
+                          <span class="inline-flex items-center justify-center shrink-0 rounded-md bg-gray-100 dark:bg-neutral-700" style="width: 40px; height: 40px;">
+                            <span class="font-medium text-sm text-gray-800 dark:text-neutral-200"><%= unit.id[0..1].upcase %></span>
+                          </span>
+                        <% end %>
+                        <div class="min-w-0 flex-1 overflow-hidden">
+                          <div class="text-sm font-semibold text-gray-800 dark:text-neutral-200 truncate"><%= t("units.#{unit.id}.name", default: unit.id) %></div>
+                          <div class="text-sm text-gray-500 dark:text-neutral-400 truncate"><%= t("units.#{unit.id}.description", default: "") %></div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="p-3 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200" data-order="<%= unit.faction %>" data-search="<%= unit.faction %>">
+                      <% if unit.faction_icon_path %>
+                        <img src="<%= relative_url unit.faction_icon_path %>" alt="<%= unit.faction %>" class="shrink-0" style="width: 24px; height: 24px;">
+                        <span class="sr-only"><%= unit.faction %></span>
+                      <% else %>
+                        <%= unit.faction %>
+                      <% end %>
+                    </td>
+                    <td class="p-3 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200"><%= unit.unit_type %></td>
+                    <td class="p-3 whitespace-nowrap text-sm text-center text-gray-800 dark:text-neutral-200" data-order="<%= unit.tech_level || '' %>"><%= format_number unit.tech_level %></td>
+                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.metal_cost || '' %>"><%= format_number unit.metal_cost %></td>
+                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.energy_cost || '' %>"><%= format_number unit.energy_cost %></td>
+                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.health || '' %>"><%= format_number unit.health %></td>
+                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.sight_distance || '' %>"><%= format_number unit.sight_distance %></td>
+                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.weapon_range || '' %>"><%= format_number unit.weapon_range %></td>
+                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.speed || '' %>"><%= format_number unit.speed %></td>
+                    <td class="p-3 whitespace-nowrap text-center" data-order="<%= unit.constructor? ? 1 : 0 %>" data-search="<%= unit.constructor? ? 'Yes' : 'No' %>">
+                      <% if unit.constructor? %>
+                        <span class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
+                          Yes
+                        </span>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- End Table -->
+    </div>
+  </div>
+</div>

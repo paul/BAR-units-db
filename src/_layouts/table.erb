@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="<%= site.locale %>" class="h-full">
+  <head>
+    <%= render "head", metadata: site.metadata, title: data.title %>
+  </head>
+  <body class="flex flex-col h-full bg-white dark:bg-neutral-900">
+    <!-- ========== HEADER ========== -->
+    <header class="sticky top-0 inset-x-0 z-50 flex flex-col bg-white dark:bg-neutral-800">
+      <!-- Top Bar -->
+      <div class="border-b border-gray-200 dark:border-neutral-700">
+        <div class="flex flex-wrap justify-between gap-x-3 items-center w-full mx-auto py-2.5 px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center">
+            <!-- Logo -->
+            <a class="flex-none rounded-md inline-block font-semibold focus:outline-none focus:opacity-80" href="<%= relative_url '/' %>" aria-label="<%= site.metadata.title %>">
+              <% if site.metadata.logo %>
+                <img class="w-28 h-auto" src="<%= relative_url site.metadata.logo %>" alt="<%= site.metadata.title %>">
+              <% else %>
+                <span class="text-xl font-bold text-gray-800 dark:text-white"><%= site.metadata.title %></span>
+              <% end %>
+            </a>
+          </div>
+          <div class="flex items-center gap-x-2">
+            <!-- Header right slot: use data.header_right or override in page -->
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- ========== END HEADER ========== -->
+    <!-- ========== MAIN CONTENT ========== -->
+    <main id="content" class="relative flex-1 flex flex-col overflow-hidden">
+      <div class="w-full py-5 px-4 sm:px-6 lg:px-8 mx-auto">
+        <!-- Page Header -->
+        <div class="flex flex-wrap sm:flex-nowrap justify-between items-center gap-2 mb-4">
+          <h1 class="font-semibold text-xl lg:text-2xl text-gray-800 dark:text-neutral-200">
+            <%= data.page_title || data.title %>
+          </h1>
+          <div class="flex flex-1 items-center justify-end gap-x-2">
+            <!-- Header actions: define in page content or use a component -->
+          </div>
+        </div>
+        <!-- End Page Header -->
+      </div>
+      <!-- Table Content -->
+      <div class="flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-sm [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+        <div class="w-full pb-10 px-4 sm:px-6 lg:px-8 mx-auto">
+          <!-- Table Section -->
+          <div class="overflow-x-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-sm [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+            <div class="min-w-full inline-block align-middle">
+              <%= yield %>
+            </div>
+          </div>
+          <!-- End Table Section -->
+        </div>
+      </div>
+    </main>
+    <!-- ========== END MAIN CONTENT ========== -->
+  </body>
+</html>

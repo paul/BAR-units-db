@@ -8,6 +8,7 @@
     "esbuild-dev": "node esbuild.config.js --watch"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.11",
     "esbuild": "^0.25.11",
     "glob": "^11.0.3",
     "postcss": "^8.5.6",
@@ -16,5 +17,12 @@
     "postcss-load-config": "^6.0.1",
     "postcss-preset-env": "^10.4.0",
     "read-cache": "^1.0.0"
+  },
+  "dependencies": {
+    "@preline/datatable": "^4.0.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "datatables.net-dt": "^2.3.7",
+    "preline": "^4.0.1",
+    "tailwindcss": "^4.1.18"
   }
 }
