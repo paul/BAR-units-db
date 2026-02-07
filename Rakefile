@@ -122,15 +122,30 @@ file "src/_locales/en.yml" => ["Beyond-All-Reason/language/en/units.json"] do |t
   puts "Generated #{t.name} with #{units.size} units"
 end
 
-task :convert_buildpics
+desc "Convert unitpics images referenced by units.json when upstream has changed"
+task convert_buildpics: ["src/_data/units.json"] do
+  src_root = Pathname("#{BAR_REPO_DIR}/unitpics")
+  dst_root = Pathname("./src/images/unitpics")
+  FileUtils.mkdir_p(dst_root)
 
-Pathname("Beyond-All-Reason/unitpics").glob("*.dds").each do |src|
-  dst = Pathname("./src/images/unitpics").join(src.basename).sub_ext(".png")
+  units = JSON.parse(File.read("src/_data/units.json"))
+  units.each_value do |data|
+    buildpic = data["buildpic"].to_s.downcase
 
-  file dst => src do |t|
-    sh "magick", src.to_s, dst.to_s.downcase
+    src = src_root.join(buildpic)
+    next unless src.exist?
+
+    dst = dst_root.join(src.basename).sub_ext(".png")
+
+    # Use git commit time (upstream change time) instead of file mtime
+    src_commit_time = `git -C #{BAR_REPO_DIR} log -1 --format=%ct -- #{src}`.strip.to_i
+
+    dst_mtime = dst.exist? ? dst.mtime.to_i : 0
+    next if dst_mtime >= src_commit_time && dst_mtime > 0
+
+    sh "magick", src.to_s, dst.to_s
+    sh "optipng", "-nc", "-nb", "-quiet", dst.to_s
   end
-  Rake::Task[:convert_buildpics].enhance([dst])
 end
 
 file "src/_data/game_data.yml" => ["Beyond-All-Reason/units",
