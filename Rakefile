@@ -41,7 +41,6 @@ end
 
 desc "Pull BAR data, regenerate assets, and build site"
 task publish: [
-  "bar:pull",
   "src/_data/units.json",
   "src/_locales/en.yml",
   "src/_data/game_data.yml",
@@ -125,20 +124,13 @@ end
 
 task :convert_buildpics
 
-if File.exist?("src/_data/units.json")
-  units = JSON.parse(File.read("src/_data/units.json"))
-  buildpics = units.map { |k, v| v["buildpic"].downcase }.uniq
+Pathname("Beyond-All-Reason/unitpics").glob("*.dds").each do |src|
+  dst = Pathname("./src/images/unitpics").join(src.basename).sub_ext(".png")
 
-  buildpics.each do |buildpic|
-    src = Pathname("./Beyond-All-Reason/unitpics").join(buildpic)
-    dst = Pathname("./src/images/unitpics").join(buildpic).sub_ext(".png")
-
-    file dst => src do |t|
-      sh "magick", src.to_s, dst.to_s
-    end
-    Rake::Task[:convert_buildpics].enhance([dst])
+  file dst => src do |t|
+    sh "magick", src.to_s, dst.to_s.downcase
   end
-
+  Rake::Task[:convert_buildpics].enhance([dst])
 end
 
 file "src/_data/game_data.yml" => ["Beyond-All-Reason/units",

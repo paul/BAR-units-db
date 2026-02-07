@@ -9,7 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+
+      - name: Checkout BAR
+        uses: actions/checkout@v6
+        with:
+          repository: beyond-all-reason/Beyond-All-Reason
+          path: Beyond-All-Reason
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -23,13 +29,20 @@ jobs:
           cache: "npm"
       - run: npm install
 
-      - name: Setup Lua
-        uses: ljmf00/setup-lua@v.1.0.1
+      - uses: leafo/gh-actions-lua@v12
+      - uses: leafo/gh-actions-luarocks@v6
+      - name: Install Lua deps
+        run: |
+          luarocks install luafilesystem
+          luarocks install dkjson
+
+      - name: Setup ImageMagick
+        uses: mfinelli/setup-imagemagick@v7.0.1
 
       - name: Build
         env:
           BRIDGETOWN_ENV: production
-        run: bin/bridgetown deploy
+        run: bundle exec rake publish
 
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3
