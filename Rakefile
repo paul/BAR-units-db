@@ -89,7 +89,7 @@ namespace :bar do
   end
 end
 
-file "src/_data/units.json" => ["Beyond-All-Reason/units"] do |t|
+file "src/_data/units.json" => ["Beyond-All-Reason/units", "Beyond-All-Reason/gamedata"] do |t|
   sh "lua", "units2json.lua", t.name
 end
 
