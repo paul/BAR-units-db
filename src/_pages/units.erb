@@ -104,8 +104,8 @@ title: "Unit List"
                   <% tags = unit.tags %>
                   <% name = t("units.#{unit.id}.name", default: unit.id) %>
                   <% description = t("units.#{unit.id}.description", default: "") %>
-                  <% search_blob = [name, description, unit.id, unit.faction, tags.join(" ")].compact.join(" ") %>
-                  <tr id="<%= unit.id %>" data-units-search="<%= search_blob %>">
+                  <% name_desc = [name, description].compact.join(" ") %>
+                  <tr id="<%= unit.id %>" data-units-name-desc="<%= name_desc %>" data-units-tags="<%= tags.join(' ') %>" data-units-faction="<%= unit.faction %>">
                     <td class="p-3 max-w-0 overflow-hidden">
                       <div class="flex items-center gap-x-3 min-w-0">
                         <% if unit.icon_path %>
@@ -128,7 +128,9 @@ title: "Unit List"
                     </td>
                     <td class="p-3 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200" data-order="<%= unit.faction %>" data-search="<%= unit.faction %>">
                       <% if unit.faction_icon_path %>
-                        <img src="<%= relative_url unit.faction_icon_path %>" alt="<%= unit.faction %>" class="shrink-0" style="width: 24px; height: 24px;">
+                        <button type="button" class="shrink-0 cursor-pointer" data-units-tag="<%= unit.faction %>" aria-label="Filter by <%= unit.faction %>">
+                          <img src="<%= relative_url unit.faction_icon_path %>" alt="<%= unit.faction %>" style="width: 24px; height: 24px;">
+                        </button>
                         <span class="sr-only"><%= unit.faction %></span>
                       <% else %>
                         <%= unit.faction %>
@@ -137,7 +139,7 @@ title: "Unit List"
                     <td class="p-3 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200" data-order="<%= tags.join(' ') %>" data-search="<%= tags.join(' ') %>">
                       <div class="flex flex-wrap gap-2">
                         <% tags.each do |tag| %>
-                          <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-line-8 text-foreground dark:text-neutral-200"><%= tag %></span>
+                          <button type="button" class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-line-8 text-foreground dark:text-neutral-200 cursor-pointer" data-units-tag="<%= tag %>"><%= tag %></button>
                         <% end %>
                       </div>
                     </td>

@@ -5,7 +5,7 @@
       <label for="units-tag-select" class="sr-only">Search</label>
       <select id="units-tag-select" multiple data-hs-select="<%= select_data.to_json %>" class="hidden">
         <% unit_options.each do |option| %>
-        <option value="<%= option[:value] %>" data-hs-select-option="<%= option[:json].to_json %>"><%= option[:label] %></option>
+        <option value="<%= option[:value] %>" data-units-kind="<%= option[:kind] %>" data-hs-select-option="<%= option[:json].to_json %>"><%= option[:label] %></option>
         <% end %>
       </select>
     </div>

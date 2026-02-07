@@ -68,10 +68,13 @@ const initUnitsAdvancedSelect = (tableWrapper, dataTable) => {
 
   const tagsInput = document.querySelector("#units-tag-select-input")
   let selectedValues = []
+  let selectedTags = []
+  let selectedFactions = []
   let freeText = ""
+  let suppressNextOpen = false
 
-  const getSearchText = (node) =>
-    (node?.getAttribute("data-units-search") || node?.textContent || "").toLowerCase()
+  const getAttr = (node, name) =>
+    (node?.getAttribute(name) || "").toLowerCase()
 
   const matchesToken = (haystack, token) => {
     const escaped = escapeRegex(token.toLowerCase())
@@ -80,9 +83,14 @@ const initUnitsAdvancedSelect = (tableWrapper, dataTable) => {
   }
 
   const applySearch = () => {
-    selectedValues = Array.from(select.selectedOptions)
+    const selectedOptions = Array.from(select.selectedOptions).filter((option) => option.value)
+    selectedValues = selectedOptions.map((option) => option.value)
+    selectedTags = selectedOptions
+      .filter((option) => option.dataset.unitsKind === "tag")
       .map((option) => option.value)
-      .filter((value) => value)
+    selectedFactions = selectedOptions
+      .filter((option) => option.dataset.unitsKind === "faction")
+      .map((option) => option.value)
     freeText = tagsInput?.value?.trim().toLowerCase() || ""
     dataTable.draw()
   }
@@ -92,15 +100,23 @@ const initUnitsAdvancedSelect = (tableWrapper, dataTable) => {
     window.jQuery.fn.dataTable.ext.search.push((settings, data, dataIndex) => {
       if (settings.nTable !== dataTable.table().node()) return true
       const node = dataTable.row(dataIndex).node()
-      const haystack = getSearchText(node)
+      const nameDesc = getAttr(node, "data-units-name-desc")
+      const tagsText = getAttr(node, "data-units-tags")
+      const factionText = getAttr(node, "data-units-faction")
 
-      if (selectedValues.length) {
-        for (const value of selectedValues) {
-          if (!matchesToken(haystack, value)) return false
+      if (selectedTags?.length) {
+        for (const value of selectedTags) {
+          if (!matchesToken(tagsText, value)) return false
         }
       }
 
-      if (freeText && !haystack.includes(freeText)) return false
+      if (selectedFactions?.length) {
+        for (const value of selectedFactions) {
+          if (!matchesToken(factionText, value)) return false
+        }
+      }
+
+      if (freeText && !nameDesc.includes(freeText)) return false
 
       return true
     })
@@ -109,6 +125,11 @@ const initUnitsAdvancedSelect = (tableWrapper, dataTable) => {
   select.addEventListener("change", applySearch)
   if (tagsInput) {
     tagsInput.addEventListener("input", applySearch)
+    tagsInput.addEventListener("focus", () => {
+      if (!suppressNextOpen) return
+      suppressNextOpen = false
+      window.HSSelect?.close(select)
+    })
     tagsInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         const raw = tagsInput.value.trim()
@@ -155,6 +176,52 @@ const initUnitsAdvancedSelect = (tableWrapper, dataTable) => {
       requestAnimationFrame(() => tagsInput.focus())
     })
   }
+
+  tableWrapper.addEventListener(
+    "mousedown",
+    (event) => {
+      const target = event.target.closest("[data-units-tag]")
+      if (!target) return
+      event.preventDefault()
+      event.stopPropagation()
+
+      const value = target.getAttribute("data-units-tag")
+      if (!value) return
+
+      const instance = window.HSSelect?.getInstance(select)
+      if (instance && Array.isArray(instance.value)) {
+        const next = instance.value.includes(value) ? instance.value : [...instance.value, value]
+        instance.setValue(next)
+      } else {
+        const option = Array.from(select.options).find((opt) => opt.value === value)
+        if (option) {
+          option.selected = true
+          select.dispatchEvent(new Event("change", { bubbles: true }))
+        }
+      }
+
+      applySearch()
+      window.HSSelect?.close(select)
+      suppressNextOpen = true
+      requestAnimationFrame(() => {
+        tagsInput?.focus()
+        window.HSSelect?.close(select)
+      })
+    },
+    true
+  )
+
+  tableWrapper.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target.closest("[data-units-tag]")
+      if (!target) return
+      event.preventDefault()
+      event.stopPropagation()
+      window.HSSelect?.close(select)
+    },
+    true
+  )
 }
 
 // Initialize on DOM ready

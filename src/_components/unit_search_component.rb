@@ -37,6 +37,7 @@ class UnitSearchComponent < Bridgetown::Component
       {
         value: tag,
         label: tag,
+        kind:  "tag",
         json:  {
           icon: icon ? %{<img class="inline-block" src="#{icon.relative_url}" />} : nil
         }.compact
@@ -50,6 +51,7 @@ class UnitSearchComponent < Bridgetown::Component
       {
         value: faction,
         label: faction.capitalize,
+        kind:  "faction",
         json:  {
           icon: %{<img class="inline-block rounded-full" src="#{relative_url icon_path}" />}
         }
