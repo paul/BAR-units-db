@@ -134,6 +134,14 @@ Unit = Data.define(:id, :data) do
     data["speed"]
   end
 
+  def construction_speed
+    data["workertime"]
+  end
+
+  def build_time
+    data["buildtime"]
+  end
+
   def weapon_range
     return nil unless data["weapons"].is_a?(Array) && data["weapons"].any? && data["weapondefs"]
 
