@@ -18,20 +18,23 @@
 
 Bridgetown.configure do |config|
   # The base hostname & protocol for your site, e.g. https://example.com
-  url ""
+  url "https://paul.github.io/BAR-units-db/"
 
   # Available options are `erb` (default), `serbea`, or `liquid`
   template_engine "erb"
 
   # Enable internationalization
-  init :i18n, available_locales: [:en]
+  # init :i18n, available_locales: [:en]
+  available_locales [:en]
+  default_locale :en
+  prefix_default_locale false
 
   # Other options you might want to investigate:
 
   # See list of timezone values here:
   # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   #
-  # timezone "America/Los_Angeles"
+  timezone "UTC"
 
   # Add collection pagination features to your site. Documentation here:
   # https://www.bridgetownrb.com/docs/content/pagination
@@ -51,7 +54,7 @@ Bridgetown.configure do |config|
   # If you're using esbuild for frontend assets, edit `esbuild.config.js` to
   # update `publicPath`.
   #
-  base_path "/BAR-units/db"
+  base_path "/BAR-units-db"
 
   # You can also modify options on this configuration object directly, like so:
   #
