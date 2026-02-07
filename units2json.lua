@@ -23,10 +23,13 @@ local UNITS_DIR = GAME_DIR .. "/units"
 local GAMEDATA_DIR = GAME_DIR .. "/gamedata"
 local SIDES_ENUM_FILE = GAMEDATA_DIR .. "/sides_enum.lua"
 local SIDEDATA_FILE = GAMEDATA_DIR .. "/sidedata.lua"
+local ICONTYPES_FILE = GAMEDATA_DIR .. "/icontypes.lua"
 local OUTPUT_FILE = arg[1] or "units.json"
 
 -- Storage for all unit definitions
 local allUnits = {}
+-- Storage for icon types
+local iconTypes = {}
 -- Set of buildable unit names
 local buildableUnits = {}
 -- Queue for BFS traversal
@@ -111,6 +114,55 @@ local function loadAllUnits()
 	end
 
 	io.stderr:write("Loaded " .. count .. " unit definitions from " .. #files .. " files\n")
+end
+
+--------------------------------------------------------------------------------
+-- Icon Types Loading
+--------------------------------------------------------------------------------
+
+local function loadIconTypes()
+	local attr = lfs.attributes(ICONTYPES_FILE)
+	if not attr or attr.mode ~= "file" then
+		io.stderr:write("Warning: " .. ICONTYPES_FILE .. " not found, icons will not be included\n")
+		return
+	end
+
+	local env = {
+		pairs = pairs,
+		ipairs = ipairs,
+		type = type,
+		tostring = tostring,
+		tonumber = tonumber,
+		string = string,
+		table = table,
+		math = math,
+	}
+
+	local chunk, err = loadfile(ICONTYPES_FILE, "t", env)
+	if not chunk then
+		io.stderr:write("Warning: Failed to load " .. ICONTYPES_FILE .. ": " .. tostring(err) .. "\n")
+		return
+	end
+
+	local success, result = pcall(chunk)
+	if not success then
+		io.stderr:write("Warning: Failed to execute " .. ICONTYPES_FILE .. ": " .. tostring(result) .. "\n")
+		return
+	end
+
+	if type(result) ~= "table" then
+		io.stderr:write("Warning: " .. ICONTYPES_FILE .. " did not return a table\n")
+		return
+	end
+
+	iconTypes = result
+
+	-- Count loaded icons
+	local count = 0
+	for _ in pairs(iconTypes) do
+		count = count + 1
+	end
+	io.stderr:write("Loaded " .. count .. " icon type definitions\n")
 end
 
 --------------------------------------------------------------------------------
@@ -316,6 +368,7 @@ local function generateOutput()
 	-- Build the output table with only buildable units
 	local output = {}
 	local missing = {}
+	local iconsAdded = 0
 
 	for unitName in pairs(buildableUnits) do
 		local unitDef = allUnits[unitName]
@@ -327,6 +380,14 @@ local function generateOutput()
 					cleanDef[k] = v
 				end
 			end
+
+			-- Add icon from iconTypes if available
+			local iconDef = iconTypes[unitName]
+			if iconDef and iconDef.bitmap then
+				cleanDef.icon = iconDef.bitmap
+				iconsAdded = iconsAdded + 1
+			end
+
 			output[unitName] = cleanDef
 		else
 			missing[#missing + 1] = unitName
@@ -340,6 +401,8 @@ local function generateOutput()
 			io.stderr:write("  - " .. name .. "\n")
 		end
 	end
+
+	io.stderr:write("Added icons to " .. iconsAdded .. " units\n")
 
 	return output
 end
@@ -375,6 +438,9 @@ local function main()
 
 	-- Load all unit definitions
 	loadAllUnits()
+
+	-- Load icon types
+	loadIconTypes()
 
 	-- Discover buildable units starting from commanders
 	discoverBuildableUnits()
