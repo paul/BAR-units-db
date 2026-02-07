@@ -3,6 +3,10 @@
 module Builders
   class Helpers < SiteBuilder
     def build
+      helper :units_collection do
+        site.data.units.map { |id, data| Unit.new(id:, data:) }
+      end
+
       helper :format_number do |value, precision: 0|
         next "" if value.nil?
 

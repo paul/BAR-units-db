@@ -48,33 +48,113 @@ const initUnitsFilters = () => {
   tableWrapper.removeAttribute("data-units-filters-pending")
 
   const dataTable = window.jQuery(tableEl).DataTable()
-  const filters = tableWrapper.querySelectorAll("[data-units-filter]")
+  initUnitsAdvancedSelect(tableWrapper, dataTable)
 
-  filters.forEach((filter) => {
-    if (filter.hasAttribute("data-units-filter-bound")) return
-    filter.setAttribute("data-units-filter-bound", "true")
+}
 
-    filter.addEventListener("select.hs.combobox", () => {
-      const columnIndex = Number(filter.getAttribute("data-units-filter"))
-      const input = filter.querySelector("[data-hs-combo-box-input]")
-      const rawValue = input?.value?.trim() || ""
-      const placeholder = filter.getAttribute("data-units-filter-placeholder")
-      const anyLabel = filter.getAttribute("data-units-filter-any") || "Any"
-      const filterType = filter.getAttribute("data-units-filter-type")
+const initUnitsAdvancedSelect = (tableWrapper, dataTable) => {
+  const select = tableWrapper.querySelector("#units-tag-select")
+  if (!select || select.hasAttribute("data-units-advanced-select-bound")) return
+  select.setAttribute("data-units-advanced-select-bound", "true")
 
-      if (!rawValue || rawValue === anyLabel || (placeholder && rawValue === placeholder)) {
-        if (input && placeholder) {
-          input.value = ""
-          filter.classList.remove("has-value")
+  requestAnimationFrame(() => {
+    const wrapper = select.closest(".hs-select")
+    if (wrapper) {
+      wrapper.style.position = "relative"
+    }
+  })
+
+  const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+
+  const tagsInput = document.querySelector("#units-tag-select-input")
+  let selectedValues = []
+  let freeText = ""
+
+  const getSearchText = (node) =>
+    (node?.getAttribute("data-units-search") || node?.textContent || "").toLowerCase()
+
+  const matchesToken = (haystack, token) => {
+    const escaped = escapeRegex(token.toLowerCase())
+    const pattern = new RegExp(`(?:^|\\s)${escaped}(?:\\s|$)`, "i")
+    return pattern.test(haystack)
+  }
+
+  const applySearch = () => {
+    selectedValues = Array.from(select.selectedOptions)
+      .map((option) => option.value)
+      .filter((value) => value)
+    freeText = tagsInput?.value?.trim().toLowerCase() || ""
+    dataTable.draw()
+  }
+
+  if (!tableWrapper.hasAttribute("data-units-advanced-filter-bound")) {
+    tableWrapper.setAttribute("data-units-advanced-filter-bound", "true")
+    window.jQuery.fn.dataTable.ext.search.push((settings, data, dataIndex) => {
+      if (settings.nTable !== dataTable.table().node()) return true
+      const node = dataTable.row(dataIndex).node()
+      const haystack = getSearchText(node)
+
+      if (selectedValues.length) {
+        for (const value of selectedValues) {
+          if (!matchesToken(haystack, value)) return false
         }
-        dataTable.column(columnIndex).search("").draw()
+      }
+
+      if (freeText && !haystack.includes(freeText)) return false
+
+      return true
+    })
+  }
+
+  select.addEventListener("change", applySearch)
+  if (tagsInput) {
+    tagsInput.addEventListener("input", applySearch)
+    tagsInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        const raw = tagsInput.value.trim()
+        if (!raw) return
+
+        const match = Array.from(select.options).find(
+          (option) => option.value && option.value.toLowerCase() === raw.toLowerCase()
+        )
+
+        event.preventDefault()
+        if (match) {
+          const instance = window.HSSelect?.getInstance(select)
+          if (instance && Array.isArray(instance.value)) {
+            const next = instance.value.includes(match.value)
+              ? instance.value
+              : [...instance.value, match.value]
+            instance.setValue(next)
+          } else {
+            match.selected = true
+            select.dispatchEvent(new Event("change", { bubbles: true }))
+          }
+          tagsInput.value = ""
+        }
+        requestAnimationFrame(() => tagsInput.focus())
         return
       }
 
-      const escaped = rawValue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-      dataTable.column(columnIndex).search(`^${escaped}$`, true, false).draw()
+      if (event.key !== "Backspace" || tagsInput.value) return
+      const instance = window.HSSelect?.getInstance(select)
+      if (instance && Array.isArray(instance.value) && instance.value.length) {
+        instance.setValue(instance.value.slice(0, -1))
+        requestAnimationFrame(() => tagsInput.focus())
+        return
+      }
+      const options = Array.from(select.selectedOptions)
+      if (!options.length) return
+      const last = options[options.length - 1]
+      last.selected = false
+      select.dispatchEvent(new Event("change", { bubbles: true }))
+      requestAnimationFrame(() => tagsInput.focus())
     })
-  })
+
+    select.addEventListener("change", () => {
+      requestAnimationFrame(() => tagsInput.focus())
+    })
+  }
 }
 
 // Initialize on DOM ready
