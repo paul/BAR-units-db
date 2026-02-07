@@ -21,6 +21,10 @@
           </div>
           <div class="flex items-center gap-x-2">
             <!-- Header right slot: use data.header_right or override in page -->
+            <div class="text-xs leading-tight text-gray-500 dark:text-neutral-400 text-right">
+              <div>Game Version: <%= site.data.game_data["game_version"] %></div>
+              <div>Last Updated: <%= Time.parse(site.data.game_data["last_updated"]).utc.iso8601 %></div>
+            </div>
           </div>
         </div>
       </div>
