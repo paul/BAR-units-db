@@ -40,8 +40,14 @@ namespace :frontend do
 end
 
 desc "Pull BAR data, regenerate assets, and build site"
-task publish: ["bar:pull", "src/_data/units.json", "src/_locales/en.yml", "src/_data/game_data.yml",
-               :convert_buildpics, :deploy]
+task publish: [
+  "bar:pull",
+  "src/_data/units.json",
+  "src/_locales/en.yml",
+  "src/_data/game_data.yml",
+  :convert_buildpics,
+  :deploy
+]
 
 #
 # Add your own Rake tasks here! You can use `environment` as a prerequisite

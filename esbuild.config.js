@@ -33,6 +33,7 @@ import build from "./config/esbuild.defaults.js"
  * @type {BuildOptions}
  */
 const esbuildOptions = {
+  publicPath: "/BAR-units/db",
   plugins: [
     // add new plugins here...
   ],
