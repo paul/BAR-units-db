@@ -4,19 +4,58 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: "0 6 * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.upstream_check.outputs.should_deploy }}
     steps:
       - uses: actions/checkout@v6
 
+      - name: Fetch upstream SHA
+        id: upstream_sha
+        run: |
+          sha=$(git ls-remote https://github.com/beyond-all-reason/Beyond-All-Reason.git HEAD | cut -f1)
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Write upstream SHA file
+        run: |
+          echo "${{ steps.upstream_sha.outputs.sha }}" > .bar-upstream-sha
+
+      - name: Cache upstream SHA
+        id: upstream_cache
+        uses: actions/cache@v4
+        with:
+          path: .bar-upstream-sha
+          key: bar-upstream-${{ steps.upstream_sha.outputs.sha }}
+          restore-keys: |
+            bar-upstream-
+
+      - name: Decide whether to build
+        id: upstream_check
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" != "schedule" ]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "${{ steps.upstream_cache.outputs.cache-hit }}" = "true" ]; then
+            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Install packages
+        if: steps.upstream_check.outputs.should_deploy == 'true'
         run: |
           sudo apt-get update
           sudo apt-get -y install optipng imagemagick
 
       - name: Checkout BAR
+        if: steps.upstream_check.outputs.should_deploy == 'true'
         uses: actions/checkout@v6
         with:
           repository: beyond-all-reason/Beyond-All-Reason
@@ -30,36 +69,45 @@ jobs:
             gamedata
 
       - name: Setup Ruby
+        if: steps.upstream_check.outputs.should_deploy == 'true'
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
 
       - name: Setup Node
+        if: steps.upstream_check.outputs.should_deploy == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
-      - run: npm install
+      - if: steps.upstream_check.outputs.should_deploy == 'true'
+        run: npm install
 
-      - uses: leafo/gh-actions-lua@v12
-      - uses: leafo/gh-actions-luarocks@v6
+      - if: steps.upstream_check.outputs.should_deploy == 'true'
+        uses: leafo/gh-actions-lua@v12
+      - if: steps.upstream_check.outputs.should_deploy == 'true'
+        uses: leafo/gh-actions-luarocks@v6
       - name: Install Lua deps
+        if: steps.upstream_check.outputs.should_deploy == 'true'
         run: |
           luarocks install luafilesystem
           luarocks install dkjson
 
       - name: Build
+        if: steps.upstream_check.outputs.should_deploy == 'true'
         env:
           BRIDGETOWN_ENV: production
         run: bundle exec rake publish
 
       - name: Upload build artifact
+        if: steps.upstream_check.outputs.should_deploy == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./output
 
   deploy:
     needs: build
+    if: needs.build.outputs.should_deploy == 'true'
 
     permissions:
       pages: write
