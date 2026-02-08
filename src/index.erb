@@ -2,9 +2,6 @@
 layout: table 
 title: "Unit List"
 ---
-<%
-  units = units_collection
-%>
 <div class="flex flex-col">
   <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-visible dark:bg-neutral-800 dark:border-neutral-700">
     <div class="overflow-visible" data-hs-datatable='{ "paging": false, "searching": true, "dom": "t", "language": { "zeroRecords": "<div class=\"py-6 text-sm text-gray-500 dark:text-neutral-400 text-center\">No units found</div>" } }' data-units-table>
@@ -118,7 +115,7 @@ title: "Unit List"
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                <% units.each do |unit| %>
+                <% units_collection.sort_by { t("units.#{it.id}.name", default: it.id).to_s.downcase }.each do |unit| %>
                   <% tags = unit.tags %>
                   <% name = t("units.#{unit.id}.name", default: unit.id) %>
                   <% description = t("units.#{unit.id}.description", default: "") %>
