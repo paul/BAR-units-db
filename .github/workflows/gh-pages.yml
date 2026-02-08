@@ -26,6 +26,7 @@ jobs:
             language
             modinfo.lua
             unitpics
+            icons
             gamedata
 
       - name: Setup Ruby

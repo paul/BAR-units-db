@@ -45,6 +45,7 @@ task publish: [
   "src/_locales/en.yml",
   "src/_data/game_data.yml",
   :convert_buildpics,
+  :convert_icons,
   :deploy
 ]
 
@@ -120,6 +121,26 @@ file "src/_locales/en.yml" => ["Beyond-All-Reason/language/en/units.json"] do |t
   File.write(t.name, locale_data.to_yaml)
 
   puts "Generated #{t.name} with #{units.size} units"
+end
+
+desc "Copy and compress unit icons when upstream has changed"
+task :convert_icons do
+  src_root = Pathname("#{BAR_REPO_DIR}/icons")
+  dst_root = Pathname("./src/images/icons")
+  FileUtils.mkdir_p(dst_root)
+
+  src_root.glob("*.png").each do |src|
+    dst = dst_root.join(src.basename)
+
+    # Use git commit time (upstream change time) instead of file mtime
+    src_commit_time = `git -C #{BAR_REPO_DIR} log -1 --format=%ct -- #{src}`.strip.to_i
+
+    dst_mtime = dst.exist? ? dst.mtime.to_i : 0
+    next if dst_mtime >= src_commit_time && dst_mtime > 0
+
+    FileUtils.cp(src, dst)
+    sh "optipng", "-nc", "-nb", "-quiet", "-fix", dst.to_s
+  end
 end
 
 desc "Convert unitpics images referenced by units.json when upstream has changed"
