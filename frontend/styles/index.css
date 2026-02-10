@@ -1,4 +1,4 @@
 @import "tailwindcss";
 
 @source "../src/**/*.{erb,rb,md}";
-@source "../frontend/javascript/**/*.js";
+@source "../frontend/javascript/**/*.{js,svelte}";

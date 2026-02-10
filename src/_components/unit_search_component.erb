@@ -1,14 +1,6 @@
-<!-- Search -->
-<div class="py-3 px-4 overflow-visible">
-  <div class="flex flex-wrap items-center gap-3 overflow-visible">
-    <div class="relative max-w-2xl w-full overflow-visible" data-units-advanced-select>
-      <label for="units-tag-select" class="sr-only">Search</label>
-      <select id="units-tag-select" multiple data-hs-select="<%= select_data.to_json %>" class="hidden">
-        <% unit_options.each do |option| %>
-        <option value="<%= option[:value] %>" data-units-kind="<%= option[:kind] %>" data-hs-select-option="<%= option[:json].to_json %>"><%= option[:label] %></option>
-        <% end %>
-      </select>
-    </div>
-  </div>
-</div>
+<!-- Search (Svelte mount target) -->
+<div id="unit-search-mount"></div>
+<script type="application/json" id="unit-search-options">
+  <%= raw search_options %>
+</script>
 <!-- End Search -->
