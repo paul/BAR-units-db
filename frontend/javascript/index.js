@@ -31,6 +31,7 @@ const initPreline = () => {
 
   requestAnimationFrame(() => {
     initUnitSearch()
+    initSortSync()
   })
 }
 
@@ -53,6 +54,70 @@ const initUnitSearch = () => {
   mount(UnitSearch, {
     target: mountTarget,
     props: { options },
+  })
+}
+
+// --- Sort URL sync ---
+
+const initSortSync = () => {
+  const tableWrapper = document.querySelector("[data-units-table]")
+  if (!tableWrapper) return
+
+  const waitForDT = () => {
+    const tableEl = tableWrapper.querySelector("table")
+    if (tableEl && jQuery.fn.dataTable.isDataTable(tableEl)) {
+      const dt = jQuery(tableEl).DataTable()
+      setupSortSync(dt, tableEl)
+    } else {
+      setTimeout(waitForDT, 50)
+    }
+  }
+  waitForDT()
+}
+
+const setupSortSync = (dt, tableEl) => {
+  // Build a map of sort_key -> column index from data-sort-key attributes
+  const headers = tableEl.querySelectorAll("thead th[data-sort-key]")
+  const keyToIndex = {}
+  const indexToKey = {}
+  headers.forEach((th, i) => {
+    const key = th.getAttribute("data-sort-key")
+    if (key) {
+      keyToIndex[key] = i
+      indexToKey[i] = key
+    }
+  })
+
+  // Restore sort from URL on load
+  const url = new URL(window.location.href)
+  const sortParam = url.searchParams.get("sort")
+  if (sortParam) {
+    const desc = sortParam.startsWith("-")
+    const key = desc ? sortParam.slice(1) : sortParam
+    const colIndex = keyToIndex[key]
+    if (colIndex !== undefined) {
+      dt.order([colIndex, desc ? "desc" : "asc"]).draw()
+    }
+  }
+
+  // Update URL when sort changes
+  jQuery(tableEl).on("order.dt", () => {
+    const order = dt.order()
+    const url = new URL(window.location.href)
+
+    if (!order || !order.length) {
+      // Unsorted state — remove sort param
+      url.searchParams.delete("sort")
+    } else {
+      const [colIndex, direction] = order[0]
+      const key = indexToKey[colIndex]
+      if (!key) return
+
+      const sortValue = direction === "desc" ? `-${key}` : key
+      url.searchParams.set("sort", sortValue)
+    }
+
+    window.history.replaceState(null, "", url.toString())
   })
 }
 

@@ -177,7 +177,7 @@
     inputValue = ""
     highlightIndex = -1
     showDropdown = false
-    inputEl?.focus()
+    inputEl?.blur()
   }
 
   /**

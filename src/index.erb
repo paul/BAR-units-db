@@ -4,176 +4,88 @@ title: "Unit List"
 ---
 <div class="flex flex-col">
   <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-visible dark:bg-neutral-800 dark:border-neutral-700">
-    <div class="overflow-visible" data-hs-datatable='{ "paging": false, "searching": true, "dom": "t", "language": { "zeroRecords": "<div class=\"py-6 text-sm text-gray-500 dark:text-neutral-400 text-center\">No units found</div>" } }' data-units-table>
-      <%= render UnitSearchComponent.new %>
-      <!-- Table -->
-      <div class="overflow-x-auto">
-        <div class="min-w-full inline-block align-middle">
-          <div class="overflow-hidden">
-            <table class="w-full">
-              <thead class="border-y border-gray-200 dark:border-neutral-700">
-                <tr>
-                  <th scope="col" class="py-1 group text-start font-normal focus:outline-hidden w-[30%] min-w-[20ex]">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Unit
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-1 group text-start font-normal focus:outline-hidden ">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Faction
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-1 group text-start font-normal focus:outline-hidden ">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Type
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Metal
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Energy
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Health
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Sight
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Range
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Move Speed
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Build Speed
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-1 group text-end font-normal focus:outline-hidden ">
-                    <div class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-gray-500 rounded-md hover:border-gray-200 dark:text-neutral-500 dark:hover:border-neutral-700">
-                      Build Time
-                      <svg class="size-3.5 ms-1 -me-0.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path class="hs-datatable-ordering-desc:text-blue-600 dark:hs-datatable-ordering-desc:text-blue-500" d="m7 15 5 5 5-5"></path>
-                        <path class="hs-datatable-ordering-asc:text-blue-600 dark:hs-datatable-ordering-asc:text-blue-500" d="m7 9 5-5 5 5"></path>
-                      </svg>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                <% units_collection.sort_by { t("units.#{it.id}.name", default: it.id).to_s.downcase }.each do |unit| %>
-                  <% tags = unit.tags %>
-                  <% name = t("units.#{unit.id}.name", default: unit.id) %>
-                  <% description = t("units.#{unit.id}.description", default: "") %>
-                  <% name_desc = [name, description].compact.join(" ") %>
-                  <tr id="<%= unit.id %>" data-units-name-desc="<%= name_desc %>" data-units-tags="<%= tags.join(' ') %>" data-units-faction="<%= unit.faction %>">
-                    <td class="p-3 max-w-0 overflow-hidden">
-                      <div class="flex items-center gap-x-3 min-w-0">
-                        <% if unit.icon_path %>
-                          <img class="shrink-0" style="width: 24px; height: 24px;" src="<%= relative_url unit.icon_path %>" alt="" width="24" height="24" loading="lazy">
-                        <% else %>
-                          <span class="inline-block shrink-0" style="width: 24px; height: 24px;"></span>
-                        <% end %>
-                        <% if unit.buildpic_path %>
-                          <img class="shrink-0 rounded-md" style="width: 40px; height: 40px;" src="<%= relative_url unit.buildpic_path %>" alt="<%= unit.id %>" width="40" height="40" loading="lazy">
-                        <% else %>
-                          <span class="inline-flex items-center justify-center shrink-0 rounded-md bg-gray-100 dark:bg-neutral-700" style="width: 40px; height: 40px;">
-                            <span class="font-medium text-sm text-gray-800 dark:text-neutral-200"><%= unit.id[0..1].upcase %></span>
-                          </span>
-                        <% end %>
-                        <div class="min-w-0 flex-1 overflow-hidden">
-                          <div class="text-sm font-semibold text-gray-800 dark:text-neutral-200 truncate"><%= name %></div>
-                          <div class="text-sm text-gray-500 dark:text-neutral-400 truncate"><%= description %></div>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="p-3 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200" data-order="<%= unit.faction %>" data-search="<%= unit.faction %>">
-                      <% if unit.faction_icon_path %>
-                        <button type="button" class="shrink-0 cursor-pointer" data-units-tag="<%= unit.faction %>" aria-label="Filter by <%= unit.faction %>">
-                          <img src="<%= relative_url unit.faction_icon_path %>" alt="<%= unit.faction %>" style="width: 24px; height: 24px;">
-                        </button>
-                        <span class="sr-only"><%= unit.faction %></span>
+    <div class="overflow-visible" data-hs-datatable='{ "paging": false, "searching": true, "dom": "t", "columnDefs": [{ "orderSequence": ["asc", "desc", ""], "targets": "_all" }], "language": { "zeroRecords": "No units found" } }' data-units-table>
+    <%= render UnitSearchComponent.new %>
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <div class="min-w-full inline-block align-middle">
+        <div class="overflow-hidden">
+          <table class="w-full">
+            <thead class="border-y border-gray-200 dark:border-neutral-700">
+              <tr>
+                <%= render SortHeaderComponent.new(label: "Unit", sort_key: "unit", align: "start", extra_classes: "w-[30%] min-w-[20ex]") %>
+                <%= render SortHeaderComponent.new(label: "Faction", sort_key: "faction", align: "start") %>
+                <%= render SortHeaderComponent.new(label: "Type", sort_key: "type", align: "start") %>
+                <%= render SortHeaderComponent.new(label: "Metal", sort_key: "metal") %>
+                <%= render SortHeaderComponent.new(label: "Energy", sort_key: "energy") %>
+                <%= render SortHeaderComponent.new(label: "Health", sort_key: "health") %>
+                <%= render SortHeaderComponent.new(label: "Sight", sort_key: "sight") %>
+                <%= render SortHeaderComponent.new(label: "Range", sort_key: "range") %>
+                <%= render SortHeaderComponent.new(label: "Move Speed", sort_key: "speed") %>
+                <%= render SortHeaderComponent.new(label: "Build Speed", sort_key: "build_speed") %>
+                <%= render SortHeaderComponent.new(label: "Build Time", sort_key: "build_time") %>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+              <% units_collection.sort_by { t("units.#{it.id}.name", default: it.id).to_s.downcase }.each do |unit| %>
+                <% tags = unit.tags %>
+                <% name = t("units.#{unit.id}.name", default: unit.id) %>
+                <% description = t("units.#{unit.id}.description", default: "") %>
+                <% name_desc = [name, description].compact.join(" ") %>
+                <tr id="<%= unit.id %>" data-units-name-desc="<%= name_desc %>" data-units-tags="<%= tags.join(' ') %>" data-units-faction="<%= unit.faction %>">
+                  <td class="p-3 max-w-0 overflow-hidden">
+                    <div class="flex items-center gap-x-3 min-w-0">
+                      <% if unit.icon_path %>
+                        <img class="shrink-0" style="width: 24px; height: 24px;" src="<%= relative_url unit.icon_path %>" alt="" width="24" height="24" loading="lazy">
                       <% else %>
-                        <%= unit.faction %>
+                        <span class="inline-block shrink-0" style="width: 24px; height: 24px;"></span>
                       <% end %>
-                    </td>
-                    <td class="p-3 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200" data-order="<%= tags.join(' ') %>" data-search="<%= tags.join(' ') %>">
-                      <div class="flex flex-wrap gap-2">
-                        <% tags.each do |tag| %>
-                          <button type="button" class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-line-8 text-foreground dark:text-neutral-200 cursor-pointer" data-units-tag="<%= tag %>"><%= tag %></button>
-                        <% end %>
+                      <% if unit.buildpic_path %>
+                        <img class="shrink-0 rounded-md" style="width: 40px; height: 40px;" src="<%= relative_url unit.buildpic_path %>" alt="<%= unit.id %>" width="40" height="40" loading="lazy">
+                      <% else %>
+                        <span class="inline-flex items-center justify-center shrink-0 rounded-md bg-gray-100 dark:bg-neutral-700" style="width: 40px; height: 40px;">
+                          <span class="font-medium text-sm text-gray-800 dark:text-neutral-200"><%= unit.id[0..1].upcase %></span>
+                        </span>
+                      <% end %>
+                      <div class="min-w-0 flex-1 overflow-hidden">
+                        <div class="text-sm font-semibold text-gray-800 dark:text-neutral-200 truncate"><%= name %></div>
+                        <div class="text-sm text-gray-500 dark:text-neutral-400 truncate"><%= description %></div>
                       </div>
-                    </td>
-                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.metal_cost || '' %>"><%= format_number unit.metal_cost %></td>
-                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.energy_cost || '' %>"><%= format_number unit.energy_cost %></td>
-                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.health || '' %>"><%= format_number unit.health %></td>
-                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.sight_distance || '' %>"><%= format_number unit.sight_distance %></td>
-                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.weapon_range || '' %>"><%= format_number unit.weapon_range %></td>
-                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.speed || '' %>"><%= format_number unit.speed %></td>
-                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.construction_speed || '' %>"><%= format_number unit.construction_speed %></td>
-                    <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.build_time || '' %>"><%= format_number unit.build_time %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  </td>
+                  <td class="p-3 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200" data-order="<%= unit.faction %>" data-search="<%= unit.faction %>">
+                    <% if unit.faction_icon_path %>
+                      <button type="button" class="shrink-0 cursor-pointer" data-units-tag="<%= unit.faction %>" aria-label="Filter by <%= unit.faction %>">
+                        <img src="<%= relative_url unit.faction_icon_path %>" alt="<%= unit.faction %>" style="width: 24px; height: 24px;">
+                      </button>
+                      <span class="sr-only"><%= unit.faction %></span>
+                    <% else %>
+                      <%= unit.faction %>
+                    <% end %>
+                  </td>
+                  <td class="p-3 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200" data-order="<%= tags.join(' ') %>" data-search="<%= tags.join(' ') %>">
+                    <div class="flex flex-wrap gap-2">
+                      <% tags.each do |tag| %>
+                        <button type="button" class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-line-8 text-foreground dark:text-neutral-200 cursor-pointer" data-units-tag="<%= tag %>"><%= tag %></button>
+                      <% end %>
+                    </div>
+                  </td>
+                  <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.metal_cost || '' %>"><%= format_number unit.metal_cost %></td>
+                  <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.energy_cost || '' %>"><%= format_number unit.energy_cost %></td>
+                  <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.health || '' %>"><%= format_number unit.health %></td>
+                  <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.sight_distance || '' %>"><%= format_number unit.sight_distance %></td>
+                  <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.weapon_range || '' %>"><%= format_number unit.weapon_range %></td>
+                  <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.speed || '' %>"><%= format_number unit.speed %></td>
+                  <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.construction_speed || '' %>"><%= format_number unit.construction_speed %></td>
+                  <td class="p-3 whitespace-nowrap text-sm text-end text-gray-800 dark:text-neutral-200" data-order="<%= unit.build_time || '' %>"><%= format_number unit.build_time %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
       </div>
-      <!-- End Table -->
     </div>
+    <!-- End Table -->
   </div>
+</div>
 </div>
